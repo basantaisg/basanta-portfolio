@@ -12,10 +12,39 @@ try {
 const browser = await chromium.launch({...(process.env.CHROME_PATH ? {executablePath:process.env.CHROME_PATH} : {})});
 const url = process.env.QA_URL || 'http://localhost:3000';
 const results = [];
+// CSS viewport sizes, rather than the display's physical pixels. Include both
+// sides of layout transitions and Retina laptop/large-monitor profiles.
+const viewports = [
+  {width:320,height:800}, {width:360,height:800}, {width:390,height:844},
+  {width:430,height:932}, {width:650,height:900}, {width:651,height:900},
+  {width:768,height:1024}, {width:900,height:900}, {width:901,height:900},
+  {width:960,height:1024}, {width:961,height:900}, {width:1024,height:768},
+  {width:1280,height:800,deviceScaleFactor:2}, {width:1366,height:768},
+  {width:1440,height:900,deviceScaleFactor:2}, {width:1920,height:1080},
+  {width:2560,height:1440},
+];
+async function checkLayout(page, width) {
+  const layout = await page.evaluate(() => {
+    const hero = document.querySelector('.hero');
+    const rect = hero.getBoundingClientRect();
+    const style = getComputedStyle(hero);
+    const left = rect.left + parseFloat(style.paddingLeft);
+    const right = innerWidth - rect.right + parseFloat(style.paddingRight);
+    const outside = [...document.querySelectorAll('.hero-copy,.hero-visual,.project-context,.project-document,.section-heading,.service,.process-step,.about-copy,.contact-copy')]
+      .filter(element => { const bounds = element.getBoundingClientRect(); return bounds.left < -1 || bounds.right > innerWidth + 1; })
+      .map(element => element.className);
+    return {left,right,contentWidth:innerWidth-left-right,outside};
+  });
+  assert(Math.abs(layout.left-layout.right)<=1, `Uneven page margins at ${width}px`);
+  assert.deepEqual(layout.outside,[],`Content outside the viewport at ${width}px`);
+  if (width===1920) assert(layout.contentWidth/width>=.85,'Full HD layout leaves excessive side margins');
+  if (width===2560) assert(layout.contentWidth/width>=.75,'Large desktop layout leaves excessive side margins');
+  return layout;
+}
 await mkdir('qa',{recursive:true});
 try {
-  for (const width of [320,360,390,768,1440]) {
-    const context = await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce'});
+  for (const {width,height,deviceScaleFactor=1} of viewports) {
+    const context = await browser.newContext({viewport:{width,height},deviceScaleFactor,reducedMotion:'reduce'});
     const page = await context.newPage();
     const errors = [];
     page.on('pageerror', error=>errors.push(error.message));
@@ -28,6 +57,8 @@ try {
     assert(bookingLinks >= 3, 'Booking actions missing');
     const overflow = await page.evaluate(()=>document.documentElement.scrollWidth > document.documentElement.clientWidth+1);
     assert(!overflow,`Horizontal overflow at ${width}px`);
+    const layout = await checkLayout(page,width);
+    assert(await page.locator('.portrait-card img').evaluate(image=>image.complete && image.naturalWidth>0),'Portrait failed to load');
     await page.keyboard.press('Tab');
     assert.equal(await page.locator(':focus').textContent(),'Skip to content');
     if (width<=900) {
@@ -47,12 +78,13 @@ try {
       assert(await details.locator('.sample-label').isVisible());
       assert(await details.locator('.rationale').isVisible());
       assert(!(await page.evaluate(()=>document.documentElement.scrollWidth > document.documentElement.clientWidth+1)),`Expanded sample overflow: ${width}px`);
+      await checkLayout(page,width);
       await details.locator('summary').click();
     }
     const accessibility = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
     assert.deepEqual(accessibility.violations,[],`Accessibility violations at ${width}px`);
     assert.deepEqual(errors,[],`Console or resource errors at ${width}px`);
-    results.push({width,overflow:false,samples:true,keyboard:true,accessibilityViolations:0,consoleErrors:0});
+    results.push({width,height,deviceScaleFactor,layout,overflow:false,samples:true,keyboard:true,accessibilityViolations:0,consoleErrors:0});
     await context.close();
   }
   for (const viewport of [{width:720,height:500},{width:844,height:390}]) {
@@ -106,7 +138,7 @@ try {
   await page.locator('#sample-email summary').click();
   assert(await page.locator('#sample-email .sample-full').isVisible(),'Sample unavailable without JavaScript');
   await context.close();
-  for (const width of [360,390,768,1440]) {
+  for (const width of [320,360,390,768,1280,1440,1920,2560]) {
     const context = await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
     const page = await context.newPage();
     const response = await page.goto(url + '/missing-page-for-qa',{waitUntil:'networkidle'});

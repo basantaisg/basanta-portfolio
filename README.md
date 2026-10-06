@@ -41,6 +41,16 @@ Replace illustrative projects with approved public work through `src/content.mjs
 
 The owner supplied `bakadwg.png` as his personal brand image. Its orange background fits the site; an 840px WebP version (about 44 KB) is used in the hero and as the header avatar. The original 1.5 MB file is preserved. Image dimensions reserve space before loading, and the hero image is preloaded. Replace `public/assets/basanta-portrait.webp` to update the portrait. The orange tokens remain unchanged for readable contrast.
 
+## Responsive layout
+
+The page uses a wider desktop canvas: up to 1,680px of content, increasing to 2,000px above a 2,200px browser width. Side padding scales from 20px to 64px, with 80px padding on the largest screens. Paragraphs have their own reading-width limits, so a wider page does not create very long text lines.
+
+The hero headline scales with its text column when container units are supported, with a viewport-based fallback. Below 961px, work samples, approach, about, and booking sections become a single column. The tablet hero puts the portrait beside the sample excerpt; below 651px, those stack. Image and footer captions can wrap.
+
+The QA runner includes 17 homepage profiles from 320px to 2,560px, including layout boundaries, 1280×800 and 1440×900 Retina laptop profiles, and 1920×1080 and 2560×1440 monitors. These profiles are implemented but have **not run** in this restricted environment. [The responsive audit](qa/responsive-audit.md) records the changes and verification limits.
+
+When comparing monitors, use the same browser zoom and compare the CSS viewport width (`window.innerWidth`), rather than screen diagonal or physical resolution.
+
 ## Deployment
 
 This project follows the official [Next.js static export workflow](https://nextjs.org/docs/app/guides/static-exports). Deploy the `out/` directory to a static host; use `npm run build` as the build command. For Vercel, import the GitHub repository using the Next.js preset. The checked-in `vercel.json` sets `npm ci` and `npm run build`; keep the Output Directory at the framework default. The project root is the repository root. For other hosts, configure unknown URLs to serve `404.html` with a 404 status.
@@ -92,4 +102,4 @@ npm run preview
 npm run qa
 ```
 
-You may use a local Chrome installation with `CHROME_PATH` instead of downloading Chromium. `QA_URL` overrides the default http://localhost:3000. The script checks 320, 360, 390, 768, and 1440px, expanded samples, mobile menu dismissal, skip-link focus, console/resource errors, Axe accessibility, and reading/navigation without JavaScript. It also checks landscape, reflow at half desktop width, one-time CSS entrances at 390px and 1440px, sample reopening, and live reduced-motion cancellation. The 404 is checked at 360, 390, 768, and 1440px as well. Reports and screenshots are written under `qa/`; inspect those visually and manually test actual 200% browser zoom. External appointments and messages are never created by the checks.
+You may use a local Chrome installation with `CHROME_PATH` instead of downloading Chromium. `QA_URL` overrides the default http://localhost:3000 and can target the live site after these changes are deployed. The script covers the 17 homepage viewport profiles described above, expanded samples, balanced page margins, desktop content width, mobile menu dismissal, skip-link focus, portrait loading, console/resource errors, Axe accessibility, and reading/navigation without JavaScript. It also checks landscape, reflow at half desktop width, one-time CSS entrances at 390px and 1440px, sample reopening, and live reduced-motion cancellation. The 404 is checked at eight widths from 320px to 2560px. Reports and screenshots are written under `qa/`; inspect those visually and manually test actual 200% browser zoom. External appointments and messages are never created by the checks.

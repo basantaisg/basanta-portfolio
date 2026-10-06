@@ -26,7 +26,7 @@ export default function Home() {
         </div>
         <div className="hero-visual">
           <figure className="portrait-card">
-            <Image src="/assets/basanta-portrait.webp" width={840} height={840} sizes="(max-width: 650px) calc(100vw - 44px), (max-width: 900px) 42vw, 460px" preload alt="Basanta Parajuli against an orange background" />
+            <Image src="/assets/basanta-portrait.webp" width={840} height={840} sizes="(max-width: 650px) min(480px, calc(100vw - 40px)), (max-width: 960px) calc(46vw - 14px), (max-width: 1440px) 40vw, 560px" preload alt="Basanta Parajuli against an orange background" />
             <figcaption className="portrait-name"><span>Basanta Parajuli</span><span>Marketing partner</span></figcaption>
           </figure>
           <div className="hero-sample-note"><p className="eyebrow">LANDING-PAGE SAMPLE</p><p>{b.samples[0].parts[1].heading}</p><a href="#sample-landing" className="paper-link">Read the sample <Arrow /></a></div>

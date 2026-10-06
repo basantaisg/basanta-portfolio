@@ -11,3 +11,6 @@
 - `npm run qa`: browser dependencies unavailable. No browser checks ran. The runner covers the homepage and 404 at mobile/tablet/desktop widths.
 - Actual screenshots, mobile/desktop overflow, browser accessibility, runtime behavior, zoom, and Lighthouse remain unverified.
 - No website publication or DNS changes performed.
+- Responsive update: desktop content cap increased from 1,200px to 1,680px, with a 2,000px cap on wider monitors. Adaptive gutters, column-based hero typography, tablet stacking, bounded reading widths, and caption/footer wrapping implemented. Public copy unchanged.
+- Current production build, content/contrast checks, simulated motion checks, browser-runner syntax, and Git whitespace validation passed.
+- Current live URL could not be fetched by the web reader; shell requests failed DNS resolution. This does not establish that the owner's website is down. Local preview failed with EPERM, Chrome launch aborted with exit 134, and browser QA exited before testing because its dependencies are unavailable. No current mobile/desktop screenshots or browser passes are claimed. See `responsive-audit.md`.
