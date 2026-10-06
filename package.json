@@ -1,0 +1,23 @@
+{
+  "name": "basanta-business-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build --webpack && node scripts/postbuild.mjs",
+    "preview": "node server.mjs",
+    "check": "node scripts/check.mjs",
+    "qa": "node scripts/browser-qa.mjs",
+    "start": "node server.mjs",
+    "check:motion": "node scripts/motion-check.mjs"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "dependencies": {
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  }
+}
