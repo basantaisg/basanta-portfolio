@@ -2,12 +2,15 @@
   --bg:#0d0e10; --surface:#17191d; --text:#f4f1ea; --muted:#b8bcc3;
   --orange:#ff6b2c; --ink:#141210; --line:#35383c;
   --paper:#f4f1ea; --paper-muted:#5b5852; --max:1680px; --gutter:clamp(20px,4vw,64px);
-  --ease-out:cubic-bezier(.22,1,.36,1); --motion-fast:180ms; --motion-reveal:420ms;
+  --ease-out:cubic-bezier(.22,1,.36,1); --motion-fast:180ms; --motion-reveal:480ms;
+  /* Smooth expand/collapse for sample panels */
+  --expand-dur:420ms; --expand-ease:cubic-bezier(.4,0,.2,1);
   color-scheme:dark; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   font-synthesis:none;
 }
 * { box-sizing:border-box; }
-html { scroll-behavior:smooth; scroll-padding-top:28px; }
+/* Offset accounts for the real header height so section anchors land below the sticky bar */
+html { scroll-behavior:smooth; scroll-padding-top:116px; }
 body { margin:0; background:var(--bg); color:var(--text); font-size:18px; line-height:1.65; -webkit-font-smoothing:antialiased; }
 h1,h2,h3,h4,p,figure { margin:0; }
 h1,h2,h3 { text-wrap:balance; overflow-wrap:break-word; }
@@ -31,14 +34,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible { outline:3px solid v
 .brand-avatar { width:46px; height:46px; object-fit:cover; border-radius:50%; }
 nav { display:flex; align-items:center; gap:28px; font-size:14px; }
 nav>a:not(.button) { padding-block:12px; }
-.button { display:inline-flex; align-items:center; justify-content:space-between; gap:24px; background:var(--orange); color:var(--ink); font-size:14px; font-weight:600; padding:16px 22px; border:1px solid var(--orange); border-radius:2px; line-height:1.4; transition:background-color var(--motion-fast) ease; }
-.button:hover,.button:focus-visible { background:#ff824c; color:var(--ink); }
+.button { display:inline-flex; align-items:center; justify-content:space-between; gap:24px; background:var(--orange); color:var(--ink); font-size:14px; font-weight:600; padding:16px 22px; border:1px solid var(--orange); border-radius:2px; line-height:1.4; transition:background-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease; }
+.button:focus-visible { background:#ff824c; color:var(--ink); box-shadow:0 0 0 3px rgba(255,107,44,.35); outline:none; }
 .button:active { background:#f3956c; }
 .button span { font-size:22px; line-height:1; display:inline-block; transition:transform var(--motion-fast) var(--ease-out); }
-.button:hover span,.button:focus-visible span { transform:translate(1px,-1px); }
+.button:focus-visible span { transform:translate(1px,-1px); }
 nav .button { padding:12px 18px; font-size:13px; }
 .menu-toggle { display:none; background:transparent; border:1px solid var(--line); color:var(--text); padding:9px 13px; min-height:44px; border-radius:2px; font-size:14px; transition:border-color var(--motion-fast) ease; }
-.menu-toggle:hover,.menu-toggle:focus-visible { border-color:var(--orange); }
+.menu-toggle:focus-visible { border-color:var(--orange); }
 .hero { border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:clamp(32px,4vw,76px); padding-block:clamp(38px,4vw,72px); align-items:center; }
 .hero-copy,.hero-visual,.project-context,.section-heading>*,.about-grid>*,.contact-section>* { min-width:0; }
 h1 { font-size:clamp(42px,4.5vw,76px); line-height:1.08; letter-spacing:-2.5px; font-weight:600; max-width:850px; margin-block:24px; }
@@ -77,21 +80,36 @@ h2 { font-size:clamp(32px,3vw,48px); letter-spacing:-1.3px; line-height:1.15; fo
 .project-context h3 { font-size:27px; line-height:1.25; font-weight:600; letter-spacing:-.5px; margin:16px 0; }
 .project-context>p:not(.eyebrow):not(.sample-label) { color:var(--muted); font-size:17px; line-height:1.75; }
 .sample-label { font-size:12px; line-height:1.65; color:var(--muted); border-left:2px solid var(--orange); padding-left:12px; margin-top:22px; max-width:390px; }
-.project-document { background:var(--surface); padding:28px 32px; min-width:0; }
+/* Sample card: stable border + transition for hover/focus feedback */
+.project-document {
+  background:var(--surface); padding:28px 32px; min-width:0;
+  border:1px solid transparent;
+  transition:border-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
+}
 .project-document.landing { background:var(--paper); color:var(--ink); color-scheme:light; }
 .document-top { display:flex; justify-content:space-between; gap:16px; font-size:11px; color:var(--muted); padding-bottom:17px; border-bottom:1px solid var(--line); }
 .landing .document-top { color:var(--paper-muted); border-color:#d3cfc6; }
 .document-excerpt { font-size:clamp(24px,1.8vw,32px); font-weight:600; line-height:1.35; letter-spacing:-.4px; margin-block:23px; max-width:36ch; overflow-wrap:break-word; }
 summary { list-style:none; display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:14px; font-weight:600; min-height:48px; border-top:1px solid var(--line); padding-top:12px; transition:color var(--motion-fast) ease; }
 summary::-webkit-details-marker { display:none; }
-summary:hover,summary:focus-visible { color:var(--orange); }
+summary:focus-visible { color:var(--orange); }
 .landing summary { border-color:#d3cfc6; }
-.landing summary:hover,.landing summary:focus-visible { color:#963b11; }
+.landing summary:focus-visible { color:#963b11; }
 .summary-open { display:none; }
 details[open] .summary-closed { display:none; }
 details[open] .summary-open { display:inline; }
 .disclosure-icon { font-size:24px; line-height:1; font-weight:400; transition:transform var(--motion-fast) ease; }
 details[open] .disclosure-icon { transform:rotate(45deg); }
+/* Smooth expand/collapse — uses a wrapper grid trick to animate max-height naturally */
+.details-body {
+  display:grid;
+  grid-template-rows:0fr;
+  overflow:hidden;
+  transition:grid-template-rows var(--expand-dur) var(--expand-ease);
+  /* Prevent layout shift: no extra space when collapsed */
+}
+details[open] .details-body { grid-template-rows:1fr; }
+.details-body-inner { min-height:0; overflow:hidden; }
 .sample-full { padding-top:10px; }
 .sample-full .sample-label { margin:10px 0 26px; }
 .landing .sample-label { color:var(--paper-muted); }
@@ -150,9 +168,23 @@ h4 { font-size:22px; font-weight:600; line-height:1.4; max-width:42ch; overflow-
 .site-footer a { min-height:44px; display:inline-flex; align-items:center; }
 .error-page { min-height:70vh; }
 .error-page>p:not(.eyebrow) { margin-bottom:28px; }
-@media(min-width:2200px) {
-  :root { --max:2000px; --gutter:80px; }
+
+/* ── Pointer-device-only hover effects ─────────────────────────────────── */
+/* Keeps touch/keyboard users free from stale hover styles */
+@media(hover:hover) and (pointer:fine) {
+  .button:hover { background:#ff824c; color:var(--ink); box-shadow:0 2px 12px rgba(255,107,44,.25); }
+  .button:hover span { transform:translate(1px,-1px); }
+  .menu-toggle:hover { border-color:var(--orange); }
+  /* Sample card: border glow on hover to guide attention toward the work */
+  .project-document:hover { border-color:var(--line); box-shadow:0 4px 24px rgba(0,0,0,.35); }
+  .project-document.landing:hover { border-color:#cecac1; box-shadow:0 4px 24px rgba(0,0,0,.12); }
+  /* Summary row color on hover */
+  summary:hover { color:var(--orange); }
+  .landing summary:hover { color:#963b11; }
+  /* Paper sample note link */
+  .paper-link:hover { color:#963b11; }
 }
+
 @media(max-width:1100px) {
   nav { gap:20px; }
 }
@@ -169,6 +201,7 @@ h4 { font-size:22px; font-weight:600; line-height:1.4; max-width:42ch; overflow-
   .process { grid-template-columns:minmax(0,1fr); gap:28px; }
   .process h3 { margin-top:12px; }
   .audience-strip>.wrap { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  html { scroll-padding-top:100px; }
 }
 @media(max-width:900px) {
   .site-header { min-height:90px; flex-wrap:wrap; padding-block:20px; }
@@ -220,21 +253,45 @@ h4 { font-size:22px; font-weight:600; line-height:1.4; max-width:42ch; overflow-
   .site-footer { gap:12px 24px; }
   .site-footer>div { width:100%; justify-content:space-between; }
   .site-footer>p { font-size:11px; }
+  html { scroll-padding-top:92px; }
 }
-/* Content is fully visible without JavaScript. Entrances are a one-time enhancement. */
+
+/* ── Entrance motion ──────────────────────────────────────────────────────
+   Content is fully visible without JavaScript.
+   Entrances are a one-time, viewport-triggered enhancement.
+   Hero visual elements use a gentler 14px rise from semi-visible (opacity .65).
+   Secondary reveals (sections, cards) rise 14px from opacity .72.
+   A small --reveal-delay stagger (set by JS, 0–80ms) prevents simultaneous firing.
+──────────────────────────────────────────────────────────────────────── */
 @media(prefers-reduced-motion:no-preference) {
-  .motion-reveal { animation:portfolio-reveal var(--motion-reveal) var(--ease-out) var(--reveal-delay,0ms) 1 backwards; }
+  .motion-reveal {
+    animation:portfolio-reveal var(--motion-reveal) var(--ease-out) var(--reveal-delay,0ms) 1 backwards;
+  }
+  /* Hero portrait enters from a touch further right to guide eye toward content */
+  .hero-visual.motion-reveal {
+    animation-name:portfolio-reveal-visual;
+    animation-duration:540ms;
+  }
 }
 @keyframes portfolio-reveal {
-  from { opacity:.7; translate:0 12px; }
-  to { opacity:1; translate:0 0; }
+  from { opacity:.72; translate:0 14px; }
+  to   { opacity:1;   translate:0 0; }
 }
+@keyframes portfolio-reveal-visual {
+  from { opacity:.65; translate:8px 0; }
+  to   { opacity:1;   translate:0 0; }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────── */
 @media(prefers-reduced-motion:reduce) {
   html { scroll-behavior:auto; }
   *,*::before,*::after { animation:none !important; transition:none !important; }
   .motion-reveal { opacity:1; translate:none; }
   .button span { transform:none !important; }
+  /* Expand/collapse is still functional but instant */
+  .details-body { transition:none; }
 }
+
 @media print {
   body { background:white; color:black; }
   .hero-visual,.menu-toggle,.site-header nav { display:none; }
@@ -242,6 +299,9 @@ h4 { font-size:22px; font-weight:600; line-height:1.4; max-width:42ch; overflow-
   .section { padding-block:24px; }
   .project-document,.services-section { background:#eee; color:black; }
   .motion-reveal { animation:none !important; opacity:1; translate:none; }
+  /* Ensure all expanded details are visible in print */
+  .details-body { display:block; overflow:visible; }
+  .details-body-inner { overflow:visible; }
 }
 
 .service-note { margin-top:22px; max-width:700px; color:var(--muted); font-size:15px; line-height:1.75; }

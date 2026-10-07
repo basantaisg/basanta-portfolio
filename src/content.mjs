@@ -17,9 +17,9 @@ export const business = {
   "title": "Basanta Parajuli | Business Marketing Partner",
   "description": "Marketing partner for finance coaches and financial consultants. Offer messaging, email sequences, and landing-page copy, including VSL landing pages.",
   "hero": {
-    "headline": "Your marketing partner",
-    "emphasis": "for finance businesses.",
-    "body": "I help finance coaches and financial consultants explain their paid offers and follow up with interested prospects. We work through the message together, then I write the email sequences and landing pages, including pages around an existing video sales letter (VSL)."
+    "headline": "Email sequences and landing pages",
+    "emphasis": "for finance coaches and consultants.",
+    "body": "I help you explain your paid offers and follow up with interested prospects."
   },
   "sampleLabel": "Illustrative sample: fictional scenario. Not commissioned client work.",
   "services": [
@@ -101,7 +101,7 @@ export const business = {
       "asset": "Three connected follow-up emails",
       "role": "Sample sequence structure and email copy",
       "excerpt": "Which hiring decision does the forecast need to support?",
-      "rationale": "The first email asks about the decision. The second narrows the discussion to an assumption. The third proposes a conversation about the scope.",
+      "rationale": "The sequence progresses from identifying the hiring decision, to explaining the relevance of a planning session, to a clear invitation to discuss support.",
       "parts": [
         {
           "label": "EMAIL 1",
@@ -110,17 +110,17 @@ export const business = {
             "Hi Alex,",
             "You mentioned wanting a clearer view of cash before making your next hiring decision.",
             "Which hiring decision does the forecast need to support? Knowing that will help us decide which costs, payment dates, and assumptions to include.",
-            "Reply with the decision and the date you need to make it."
+            "Reply with the decision you are facing so we can start there."
           ]
         },
         {
           "label": "EMAIL 2",
-          "heading": "Subject: Which forecast assumption needs checking?",
+          "heading": "Subject: Testing your forecast assumptions",
           "paragraphs": [
             "Hi Alex,",
-            "Expected payment dates, committed work, and the start date of a new hire can all change a forecast. Which input are you least certain about?",
-            "In a planning session, we can review that assumption and consider how it would affect the decision.",
-            "Reply with the assumption you would like to work through."
+            "Expected payment dates, committed work, and the start date of a new hire can all change a cash-flow forecast.",
+            "A planning session helps you review those assumptions. We use your current reports to consider how different inputs affect the hiring decision.",
+            "Reply to let me know if you would like to work through your assumptions."
           ]
         },
         {
@@ -129,8 +129,8 @@ export const business = {
           "paragraphs": [
             "Hi Alex,",
             "If you are still working on the hiring decision, we can discuss your current reports and the question the forecast needs to answer.",
-            "From there, I can outline a scope for support if it is useful.",
-            "Would you like to arrange a conversation? Reply with a time that suits you."
+            "From there, I can outline a scope for support if a planning session is useful.",
+            "Reply with a time that suits you to arrange a conversation."
           ]
         }
       ],

@@ -39,7 +39,7 @@ export default function Home() {
         <Portfolio />
       </section>
       <section className="services-section section" id="services" aria-labelledby="services-title"><div className="wrap">
-        <SectionHeading number="02" label="SERVICES" id="services-title" description="We start with your offer, audience, and the role each asset needs to play. Then we agree the pages or emails needed for the campaign.">Where I can help</SectionHeading>
+        <SectionHeading number="02" label="SERVICES" id="services-title" description="The copy required to explain your offer and follow up with leads.">Where I can help</SectionHeading>
         <div className="services-list">{b.services.map(service => <article className="service" data-reveal key={service.title}><h3>{service.title}</h3><div><p>{service.body}</p><p className="scope">{service.scope}</p></div></article>)}</div>
         <p className="service-note">I can also review these pages and sequences against feedback and campaign data when it is available.</p>
       </div></section>
@@ -49,7 +49,7 @@ export default function Home() {
       </section>
       <section className="about-section section" id="about" aria-labelledby="about-title"><div className="wrap about-grid">
         <div data-reveal><p className="eyebrow"><span className="section-index">04 /</span> ABOUT</p><h2 id="about-title">About Basanta</h2></div>
-        <div className="about-copy" data-reveal><p className="lead">I’m Basanta Parajuli. I work as a marketing partner to finance coaches and financial consultants, with a focus on email sequences and landing pages.</p><p>I research the offer and audience, develop the sales argument, and write the pages and emails. I also work with fractional CMOs who need these assets for a campaign.</p><p>I check that claims are supported, the offer is understandable, and the next step is clear.</p><p>My interest in Humanity and Stoicism informs how I work: respect for the reader and accountability for what I write.</p></div>
+        <div className="about-copy" data-reveal><p className="lead">I’m Basanta Parajuli.</p><p>I check that claims are supported, the offer is understandable, and the next step is clear.</p><p>My interest in Stoicism informs how I work: respect for the reader and accountability for what I write.</p></div>
       </div></section>
       <section className="contact-section section wrap" id="contact" aria-labelledby="contact-title">
         <div className="fit" data-reveal><p className="eyebrow">WHO THIS IS FOR</p><p>A project usually starts with:</p><ul><li>An existing paid offer</li><li>A defined audience</li><li>A way to put the copy into use</li></ul><p className="fit-note">Fractional CMOs can bring a campaign brief and the copy they need.</p></div>
